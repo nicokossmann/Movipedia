@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/all.min.css">
+    <title>Movipedia</title>
+</head>
+<body id="browse">
+    <!--Header-->
+    <div id = "header">
+        <div id = navbar>
+            <div id="logo"><h1><i class="fas fa-film"></i> Movipedia</h1></div>
+            <div id="search">
+                <form>
+                    <input type="" id="search-input" placeholder="Search Movie">
+                    <button type="submit" id="search-btn" class="btn">Search</button>
+                </form>
+            </div>
+            <div id = links>
+                <a href="#now-playing"><h3> Now Playing</h3></a>
+                <a href="#trending"><h3>Trending</h3></a>
+                <a href="#top-rated"><h3>Top Rated</h3></a>
+                <a href="#upcoming"><h3>Upcoming</h3></a>
+            </div>
+        </div>
+    </div>
+    <!--Content-->
+    <div class="content">
+        <div class="content-container">
+            <div id="now-playing" class="heading">
+                <h2><i class="fas fa-play"></i> Now Playing</h2>
+                <div class="carousel-container">
+                    <button class="prev-btn carousel-btn" id="now-playing-prev"><i class="fas fa-chevron-circle-left"></i></button>
+                    <div class="custom-carousel-wrapper movie-carousel">
+                        <ul id="now-playing-carousel" class="carousel"></ul>
+                    </div>
+                    <button class="next-btn carousel-btn" id="now-playing-next"><i class="fas fa-chevron-circle-right"></i></button>
+                </div>
+            </div>
+            <div id="trending" class="heading">
+                <h2><i class="fas fa-fire"></i> Trending</h2>
+                <div class="carousel-container">
+                    <button class="prev-btn carousel-btn" id="trending-prev"><i class="fas fa-chevron-circle-left"></i></button>
+                    <div class="custom-carousel-wrapper movie-carousel">
+                        <ul id="trending-carousel" class="carousel"></ul>
+                    </div>
+                    <button class="next-btn carousel-btn" id="trending-next"><i class="fas fa-chevron-circle-right"></i></button>
+                </div>
+            </div>
+            <div id="top-rated" class="heading">
+                <h2><i class="fas fa-thumbs-up"></i> Top Rated</h2>
+                <div class="carousel-container">
+                    <button class="prev-btn carousel-btn" id="top-rated-prev"><i class="fas fa-chevron-circle-left"></i></button>
+                    <div class="custom-carousel-wrapper movie-carousel">
+                        <ul id="top-rated-carousel" class="carousel"></ul>
+                    </div>
+                    <button class="next-btn carousel-btn" id="top-rated-next"><i class="fas fa-chevron-circle-right"></i></button>
+                </div>
+            </div>
+            <div id="upcoming" class="heading">
+                <h2><i class="fas fa-bolt"></i> Upcoming</h2>
+                <div class="carousel-container">
+                    <button class="prev-btn carousel-btn" id="upcoming-prev"><i class="fas fa-chevron-circle-left"></i></button>
+                    <div class="custom-carousel-wrapper movie-carousel">
+                        <ul id="upcoming-carousel" class="carousel"></ul>
+                    </div>
+                    <button class="next-btn carousel-btn" id="upcoming-next"><i class="fas fa-chevron-circle-right"></i></button>
+                </div>
+            </div>
+        </div>
+        <!--Footer-->
+        <div id="footer">
+            <a href="https://developers.themoviedb.org/3/getting-started/introduction"><img src="/pictures/tmdb-logo.png" alt="thmdb-logo"></a>
+        </div>
+        
+    </div>
+    <script src="js/main.js"></script>
+</body>
+</html>
