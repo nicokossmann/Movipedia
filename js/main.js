@@ -176,7 +176,7 @@ const app = {
         let value = searchInput.value;
         if (value != '') {
             sessionStorage.setItem('value', value);
-            window.location = "/pages/search.html";
+            window.location = "search.html";
             app.getPage();
         }
     },
@@ -229,7 +229,7 @@ const app = {
             let movieId = target.id;
             movieId = movieId.substring(0, movieId.length -1);
             sessionStorage.setItem('movieId', movieId);
-            window.location = "/pages/movie.html";
+            window.location = "movie.html";
             app.getPage();
         }
     }
