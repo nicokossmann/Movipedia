@@ -1,6 +1,6 @@
 const API_KEY  = 'be0311975f164b8ee929631c0278bd97';
 const BASE_URL = 'https://api.themoviedb.org/3/';
-const BASE_IMAGE_URL = 'https://image.tmdb.org/t/p/w500';
+const BASE_IMAGE_URL = 'https://image.tmdb.org/t/p/w1280';
 
 const searchInput = document.getElementById('search-input');
 const searchBtn = document.getElementById('search-btn');
@@ -195,7 +195,7 @@ const app = {
             <h1>${movie.original_title}</h1>`;
             shortInfo.innerHTML =`
             <span>${movie.release_date.substring(0, 4)}</span>
-            <span>${app.getCategories(movie)}</span>
+            <span>-${app.getCategories(movie)}-</span>
             <span>${app.getRuntime(movie)}</span>`;
             movieDetails.innerHTML = `<div id = 'status'><p>Status: ${movie.status}</p></div>
             <h2>Summary</h2>

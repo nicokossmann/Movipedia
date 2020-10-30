@@ -274,17 +274,48 @@ button > i {
     width: 100%;
 }
 
-#movie-header-container {
-    padding-left: 2.5rem;
 
+#movie-header-container {
+    animation: fadeIn 2s;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 #movie-header {
     height: 650px;
     width: auto;
-    background-size: contain;
+    background-size: cover;
+    background-position: center;
     background-repeat: no-repeat;
     position: relative;
+    transition: 500ms;
+    animation: movieHeaderAnimation 20s linear infinite alternate;
+}
+
+
+@keyframes movieHeaderAnimation {
+    0% {
+        background-position: top;
+    }
+    100% {
+        background-position: bottom;
+    }
+}
+
+#movie-header-highlight {
+    background: radial-gradient(circle at bottom left, #ff2a55, transparent 30%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 #info {
