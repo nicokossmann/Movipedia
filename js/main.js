@@ -188,6 +188,7 @@ const app = {
         let shortInfo = document.getElementById('short-info');
         let movieDetails = document.getElementById('movie-details');
         let iframeContainer = document.getElementById('iframe-container');
+        let moreMovieDetails = document.getElementById('more-movie-details');
         app.requestData(`movie/${movieId}`, (movie) => {app.requestData(`movie/${movieId}/videos`, (trailer) => {
             movieHeader.style.backgroundImage = `url('${BASE_IMAGE_URL}${movie.backdrop_path}')`;
             topic.innerHTML =`
@@ -195,14 +196,18 @@ const app = {
             <h1>${movie.original_title}</h1>`;
             shortInfo.innerHTML =`
             <span>${movie.release_date.substring(0, 4)}</span>
-            <span>-${app.getCategories(movie)}-</span>
+            <span>- ${app.getCategories(movie)}-</span>
             <span>${app.getRuntime(movie)}</span>`;
-            movieDetails.innerHTML = `<div id = 'status'><p>Status: ${movie.status}</p></div>
+            movieDetails.innerHTML = `<h2>Status</h2><span>Status: ${movie.status}</span>
             <h2>Summary</h2>
             <div id = 'tagline'><p>${movie.tagline}</p></div>
             <div id = 'summary'><p>${movie.overview}</p></div>`;
             iframeContainer.innerHTML = `<h2>Watch Trailer</h2><div iframe-wrapper><iframe src="https://www.youtube-nocookie.com/embed/${trailer.results[0].key}" 
             allowfullscreen ></iframe></div>`;
+            moreMovieDetails.innerHTML = `<h2>Movie Details</h2><ul id='more-details'><li>${app.getBudget(movie)}</li><li>${app.getRevenue(movie)}<li>
+            <li>Production-comp${app.getProduction(movie)}</li></ul>`;
+            console.log(movie)
+
         })});
     },
 
@@ -221,6 +226,33 @@ const app = {
             runtime = movie.runtime + ' mins';
         }
         return runtime;
+    },
+
+    getBudget: (movie) => {
+        let budget = '';
+        if(movie.budget == 0) {
+            budget = 'unknown';
+        }
+        else {
+            budget = `${movie.budget}$`
+        }
+        return `Budget: ${budget}`;
+    },
+
+    getRevenue: (movie) => {
+        let revenue = '';
+        if(movie.revenue == 0) {
+            revenue = 'unknown';
+        }
+        else {
+            revenue = `${movie.revenue}$`
+        }
+        return `Revenue: ${revenue}`;
+    },
+
+    getProduction: (movie) => {
+        let production = ``;
+
     },
 
     onClickImg: (event) => {

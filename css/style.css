@@ -340,6 +340,16 @@ iframe {
     height: 400px;
 }
 
+#more-details {
+    padding-left: 0;
+}
+
+#more-details li {
+    text-align: left;
+    margin-left: 0;
+    margin-bottom: 1rem;
+}
+
 /* Footer */
 
 #footer {
