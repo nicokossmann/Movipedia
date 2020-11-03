@@ -99,7 +99,6 @@ const app = {
         let paths = ['movie/now_playing', 'trending/movie/week', 'movie/top_rated', 'movie/upcoming'];
         let elements = ['now-playing', 'trending', 'top-rated', 'upcoming'];
 
-
         for(let i in elements) {
             app.requestData(paths[i], movies => {
                 let carousel = new MovieCarousel(elements[i], app.getImages(movies.results), movies);
@@ -198,16 +197,27 @@ const app = {
             <span>${movie.release_date.substring(0, 4)}</span>
             <span>- ${app.getCategories(movie)}-</span>
             <span>${app.getRuntime(movie)}</span>`;
-            movieDetails.innerHTML = `<h2>Status</h2><span>Status: ${movie.status}</span>
+            movieDetails.innerHTML = `<h2>Status</h2><span><h4>Status:</h4> ${movie.status}</span>
             <h2>Summary</h2>
             <div id = 'tagline'><p>${movie.tagline}</p></div>
             <div id = 'summary'><p>${movie.overview}</p></div>`;
             iframeContainer.innerHTML = `<h2>Watch Trailer</h2><div iframe-wrapper><iframe src="https://www.youtube-nocookie.com/embed/${trailer.results[0].key}" 
             allowfullscreen ></iframe></div>`;
             moreMovieDetails.innerHTML = `<h2>Movie Details</h2><ul id='more-details'><li>${app.getBudget(movie)}</li><li>${app.getRevenue(movie)}<li>
-            <li>Production-comp${app.getProduction(movie)}</li></ul>`;
-            console.log(movie)
-
+            <li id='production-companies'><h4>Production companies</h4>:<ul id='production'>${app.getProduction(movie)}</ul></li>`;
+            app.requestData(`movie/${movie.id}/similar`, movies => {
+                console.log(movies)
+                if (movies.results.length != 0) {
+                    let carousel = new MovieCarousel('similar-movies', app.getImages(movies.results), movies);
+                    carousel.render();
+                }
+                else {
+                    document.getElementById('similar-movies-container').style.display = 'None';
+                    let notFound = document.createElement('h4');
+                    notFound.innerHTML = 'No movies found :/';
+                    document.getElementById('similar-movies').appendChild(notFound);
+                }
+            });
         })});
     },
 
@@ -228,15 +238,19 @@ const app = {
         return runtime;
     },
 
+    getNumberWithCommas(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    },
+
     getBudget: (movie) => {
         let budget = '';
         if(movie.budget == 0) {
             budget = 'unknown';
         }
         else {
-            budget = `${movie.budget}$`
+            budget = `${app.getNumberWithCommas(movie.budget)}$`
         }
-        return `Budget: ${budget}`;
+        return `<h4>Budget:</h4> ${budget}`;
     },
 
     getRevenue: (movie) => {
@@ -245,14 +259,18 @@ const app = {
             revenue = 'unknown';
         }
         else {
-            revenue = `${movie.revenue}$`
+            revenue = `${app.getNumberWithCommas(movie.revenue)}$`
         }
-        return `Revenue: ${revenue}`;
+        return `<h4>Revenue:</h4> ${revenue}`;
     },
 
     getProduction: (movie) => {
         let production = ``;
-
+        let companies = movie.production_companies
+        companies.forEach(company => {
+            production += `<li>${company.name}</li>`;
+        });
+        return production;
     },
 
     onClickImg: (event) => {

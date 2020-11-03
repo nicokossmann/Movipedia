@@ -32,6 +32,11 @@ h3 {
     font-weight: bold;
 }
 
+h4 {
+    font-weight: bold;
+    display: inline;
+}
+
 a {
     margin: 0 2rem 0 2rem;
     text-decoration: none;
@@ -348,6 +353,11 @@ iframe {
     text-align: left;
     margin-left: 0;
     margin-bottom: 1rem;
+}
+
+#production {
+    list-style: initial;
+    margin-top: 1rem;
 }
 
 /* Footer */
