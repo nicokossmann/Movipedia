@@ -69,7 +69,7 @@ class MovieCarousel {
         this.carouselContent.innerHTML = '';
         let htmlContent = '';
         for(let image of this.imageList) {
-                htmlContent += `<li id ="${image.id}" class="title-img"><img src=${BASE_IMAGE_URL + image.profile_path}
+                htmlContent += `<li id ="${image.id}" class="cast-img"><img src=${BASE_IMAGE_URL + image.profile_path}
                 id=${image.id}/>
                 <h4>Character:<br>${image.character}<br>Name:<br>${image.name}</h4></li>`   
         }
@@ -302,11 +302,14 @@ const app = {
     onClickImg: (event) => {
         let target = event.target;
         if(target.tagName.toLowerCase() === 'img') {
-            let movieId = target.id;
-            movieId = movieId.substring(0, movieId.length -1);
-            sessionStorage.setItem('movieId', movieId);
-            window.location = "movie.html";
-            app.getPage();
+            console.log(target.parentElement);
+            if(document.getElementById(target.id).parentElement.getAttribute('class') == "title-img"){
+                let movieId = target.id;
+                movieId = movieId.substring(0, movieId.length -1);
+                sessionStorage.setItem('movieId', movieId);
+                window.location = "movie.html";
+                app.getPage();
+            }
         }
     }
 
