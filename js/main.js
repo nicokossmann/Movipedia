@@ -64,6 +64,17 @@ class MovieCarousel {
         }
         this.carouselContent.innerHTML = htmlContent;
     }
+
+    renderCast() {
+        this.carouselContent.innerHTML = '';
+        let htmlContent = '';
+        for(let image of this.imageList) {
+                htmlContent += `<li id ="${image.id}" class="title-img"><img src=${BASE_IMAGE_URL + image.profile_path}
+                id=${image.id}/>
+                <h4>Character:<br>${image.character}<br>Name:<br>${image.name}</h4></li>`   
+        }
+        this.carouselContent.innerHTML = htmlContent;
+    }
 }
 
 const app = {
@@ -137,6 +148,16 @@ const app = {
         return moviesImgs;
     },
 
+    getProfileImages: (cast) => {
+        let castImgs = [];
+        cast.forEach(profile => {
+            if(profile.profile_path != null){
+                castImgs.push(profile);  
+            }
+        });
+        return castImgs;
+    },
+
     createSearchPage: () => {
         let value = sessionStorage.getItem('value');
         let path = 'search/movie';
@@ -204,9 +225,9 @@ const app = {
             iframeContainer.innerHTML = `<h2>Watch Trailer</h2><div iframe-wrapper><iframe src="https://www.youtube-nocookie.com/embed/${trailer.results[0].key}" 
             allowfullscreen ></iframe></div>`;
             moreMovieDetails.innerHTML = `<h2>Movie Details</h2><ul id='more-details'><li>${app.getBudget(movie)}</li><li>${app.getRevenue(movie)}<li>
-            <li id='production-companies'><h4>Production companies</h4>:<ul id='production'>${app.getProduction(movie)}</ul></li>`;
+            <li id='production-companies'><h4>Production companies:</h4><ul id='production'>${app.getProduction(movie)}</ul></li>`;
+            console.log(movie);
             app.requestData(`movie/${movie.id}/similar`, movies => {
-                console.log(movies)
                 if (movies.results.length != 0) {
                     let carousel = new MovieCarousel('similar-movies', app.getImages(movies.results), movies);
                     carousel.render();
@@ -219,6 +240,11 @@ const app = {
                 }
             });
         })});
+        app.requestData(`movie/${movieId}/credits`, (cast) => {
+            console.log(cast);
+            let carousel = new MovieCarousel('cast', app.getProfileImages(cast.cast), cast);
+            carousel.renderCast();
+        });
     },
 
     getCategories: (movie) => {

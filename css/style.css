@@ -340,6 +340,10 @@ button > i {
     font-size: 1.5rem;
 }
 
+#summary {
+    width: 800px;
+}
+
 iframe {
     width: 800px;
     height: 400px;
@@ -358,6 +362,10 @@ iframe {
 #production {
     list-style: initial;
     margin-top: 1rem;
+}
+
+#movie-page .heading {
+    padding: 0;
 }
 
 /* Footer */
