@@ -8,7 +8,7 @@ const searchBtn = document.getElementById('search-btn');
 const carousels = {};
 var carouselsLoaded = 0;
 
-class MovieCarousel {
+class Carousel {
     constructor(sliderId, imageList, movieData) {
         this.carouselContent = document.getElementById(sliderId + '-carousel');
         this.sliderId = sliderId;
@@ -60,7 +60,7 @@ class MovieCarousel {
         for(let image of this.imageList) {
                 htmlContent += `<li id ="${image.id}" class="title-img"><div class="rating"><i class="fas fa-star"></i> ${image.vote_average}</div><img src=${BASE_IMAGE_URL + image.poster_path}
                 id=${image.id}/>
-                <h3>${image.title}</h3></li>`   
+                <h3>${app.shortTitle(image.title)}</h3></li>`   
         }
         this.carouselContent.innerHTML = htmlContent;
     }
@@ -71,7 +71,7 @@ class MovieCarousel {
         for(let image of this.imageList) {
                 htmlContent += `<li id ="${image.id}" class="cast-img"><img src=${BASE_IMAGE_URL + image.profile_path}
                 id=${image.id}/>
-                <h4>Character:<br>${image.character}<br>Name:<br>${image.name}</h4></li>`   
+                <h4>Character:</h4><br><span>${image.character}</span><br><h4>Name:</h4><br><span>${image.name}</span></li>`   
         }
         this.carouselContent.innerHTML = htmlContent;
     }
@@ -112,7 +112,7 @@ const app = {
 
         for(let i in elements) {
             app.requestData(paths[i], movies => {
-                let carousel = new MovieCarousel(elements[i], app.getImages(movies.results), movies);
+                let carousel = new Carousel(elements[i], app.getImages(movies.results), movies);
                 carousels[elements[i]] = carousel;
                 carousel.render();
                 carouselsLoaded++;
@@ -158,6 +158,14 @@ const app = {
         return castImgs;
     },
 
+    shortTitle(title){
+        if(title.length >= 32){
+            title = title.slice(0, 30);
+            title = title + " ...";
+        }
+        return title;
+    },
+
     createSearchPage: () => {
         let value = sessionStorage.getItem('value');
         let path = 'search/movie';
@@ -191,6 +199,37 @@ const app = {
         return length;
     },
 
+    getCrew: (crew) => {
+        let director = '';
+        let producer = '';
+        let composer =  '';
+        let photography = '';
+        for(member in crew){
+           switch (crew[member].job) {
+               case "Director":
+                   director += `${crew[member].name}, `;
+                   break;
+                case "Producer":
+                    producer += `${crew[member].name}, `;
+                    break;
+                case "Director of Photography":
+                    photography += `${crew[member].name}, `;
+                    break;
+                case "Original Music Composer":
+                    composer += `${crew[member].name}, `;
+                    break;
+               default:
+                   break;
+           }
+        }
+
+        return `
+        <li><h4>Director: </h4>${director.slice(0, director.length-2)}</li>
+        <li><h4>Producer: </h4>${producer.slice(0, producer.length-2)}</li>
+        <li><h4>Director of Photography: </h4>${photography.slice(0, photography.length-2)}</li>
+        <li><h4>Music Composer: </h4>${composer.slice(0, composer.length-2)}</li>`;
+    },
+
     onClickSearchBtn: (event) => {
         event.preventDefault();
         let value = searchInput.value;
@@ -209,6 +248,9 @@ const app = {
         let movieDetails = document.getElementById('movie-details');
         let iframeContainer = document.getElementById('iframe-container');
         let moreMovieDetails = document.getElementById('more-movie-details');
+        let crew = document.getElementById('crew');
+        let review = document.getElementById('recent-review');
+
         app.requestData(`movie/${movieId}`, (movie) => {app.requestData(`movie/${movieId}/videos`, (trailer) => {
             movieHeader.style.backgroundImage = `url('${BASE_IMAGE_URL}${movie.backdrop_path}')`;
             topic.innerHTML =`
@@ -226,10 +268,30 @@ const app = {
             allowfullscreen ></iframe></div>`;
             moreMovieDetails.innerHTML = `<h2>Movie Details</h2><ul id='more-details'><li>${app.getBudget(movie)}</li><li>${app.getRevenue(movie)}<li>
             <li id='production-companies'><h4>Production companies:</h4><ul id='production'>${app.getProduction(movie)}</ul></li>`;
+
             console.log(movie);
+
+            app.requestData(`movie/${movie.id}/reviews`, reviews =>{
+                console.log(reviews);
+                review.innerHTML = `<h2>Recent Review</h2>`;
+
+                if (reviews.results.length != 0) {
+                    let userReview = document.createElement('div')
+                    userReview.id = 'review-content';
+                    userReview.innerHTML = `<ul id="user-review">${app.getReview(reviews.results[0])}</ul>`;
+                    review.appendChild(userReview);
+                }
+                else {
+                    let notFound = document.createElement('h4');
+                    notFound.innerHTML = 'No review found :/';
+                    review.appendChild(notFound);
+                }
+
+            });
+
             app.requestData(`movie/${movie.id}/similar`, movies => {
                 if (movies.results.length != 0) {
-                    let carousel = new MovieCarousel('similar-movies', app.getImages(movies.results), movies);
+                    let carousel = new Carousel('similar-movies', app.getImages(movies.results), movies);
                     carousel.render();
                 }
                 else {
@@ -242,8 +304,9 @@ const app = {
         })});
         app.requestData(`movie/${movieId}/credits`, (cast) => {
             console.log(cast);
-            let carousel = new MovieCarousel('cast', app.getProfileImages(cast.cast), cast);
+            let carousel = new Carousel('cast', app.getProfileImages(cast.cast), cast);
             carousel.renderCast();
+            crew.innerHTML = `<h2>Crew</h2><ul id="crew-members">${app.getCrew(cast.crew)}</ul>`;
         });
     },
 
@@ -299,6 +362,15 @@ const app = {
         return production;
     },
 
+    getReview: (review) => {
+        console.log(review)
+        return `
+        <li><p>${review.content}</p></li>
+        <li>${review.updated_at.slice(0, 10)}</div></li>
+        <li><h4>${review.author}: </h4> <i class="fas fa-star"></i>${review.author_details.rating}/10</li>
+        `;
+    },
+
     onClickImg: (event) => {
         let target = event.target;
         if(target.tagName.toLowerCase() === 'img') {
@@ -315,5 +387,4 @@ const app = {
 
 }
 
-app.init()
-
+app.init();

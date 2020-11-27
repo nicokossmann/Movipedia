@@ -161,7 +161,7 @@ button > i {
 
 .heading {
     margin-top: 0;
-    padding-top: 75px;
+    padding-top: 110px;
 }
 
 .carousel-container {
@@ -368,12 +368,35 @@ iframe {
     padding: 0;
 }
 
+#crew-members {
+    padding-left: 0;
+}
+
+#crew-members li {
+    margin-left: 0;
+    text-align: left;
+    padding-bottom: 1rem;
+}
+
+#user-review {
+    padding-left: 0;
+}
+
+#user-review li {
+    margin-left: 0;
+    text-align: left;
+    padding-bottom: 1rem;
+}
+
+#user-review p {
+    border-left: 4px solid #ff2a55;
+    padding-left: 1rem;
+}
+
 /* Footer */
 
 #footer {
     width: 100%;
-    margin-top: 50px;
-    margin-bottom: 50px;
     text-align: center;
 }
 
@@ -385,4 +408,6 @@ iframe-wrapper {
 #footer img {
     width: 150px;
     height: auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
 }
